@@ -1,0 +1,106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Cocktail App Api",
+        "version": "1.0.0",
+        "title": "Cocktail App API",
+        "contact": {
+            "email": ""
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "schemes": ["http"],
+    "host": "localhost:3081",
+    "basePath": "/api/v1",
+    "paths" : {
+        "/login" : {
+            "post" : {
+                "summary" : "Login",
+                "description": "Attempt to login",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Login object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "loginObject" : {
+                                    "type": "object",
+                                    "$ref": "#/definitions/LoginObject"
+                                } 
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "object",
+                            "items": {
+                                "$ref": "#/definitions/LoginResponse"
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        }
+	},
+        
+    "definitions": {
+        "LoginObject": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+				"password": {
+                    "type": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "LoginResponse": {
+			"type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "statusCode": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

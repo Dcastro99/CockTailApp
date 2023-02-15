@@ -13,10 +13,10 @@ class App {
     // public taskController: TaskController;
 
     /* Swagger files start */
-    // private swaggerFile: any = (process.cwd()+"/swagger/swagger.json");
-    // private swaggerData: any = fs.readFileSync(this.swaggerFile, 'utf8');
-    // private customCss: any = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
-    // private swaggerDocument = JSON.parse(this.swaggerData);
+    private swaggerFile: any = (process.cwd()+"/src/swagger/swagger.json");
+    private swaggerData: any = fs.readFileSync(this.swaggerFile, 'utf8');
+    private customCss: any = fs.readFileSync((process.cwd()+"/src/swagger/swagger.css"), 'utf8');
+    private swaggerDocument = JSON.parse(this.swaggerData);
     /* Swagger files end */
 
 
@@ -57,9 +57,19 @@ class App {
             res.send("Typescript App works!!");
         });
 
+        this.express.post("/login", (req, res, next) => {
+            if (req.body.loginObject?.email && req.body.loginObject?.password) {
+                res.status(200);
+                return res.send("We Got an Email and Password");
+            }
+            res.status(422);
+            return res.send("Invalid Login Credentials");
+        });
+
+
         // swagger docs
-        // this.express.use('/api/docs', swaggerUi.serve,
-        //     swaggerUi.setup(this.swaggerDocument, this.customCss));
+        this.express.use('/api/docs', swaggerUi.serve,
+            swaggerUi.setup(this.swaggerDocument, this.customCss));
 
         // handle undefined routes
         this.express.use("*", (req, res, next) => {
