@@ -19,14 +19,17 @@ class LoginPage extends StatelessWidget {
       backgroundColor: Colors.grey[300],
       body: SafeArea(
         child: Center(
-          child: Column(children: [
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             const SizedBox(height: 50),
+
             //LOGO
             const Icon(
               Icons.phone_iphone,
               size: 100,
             ),
+
             const SizedBox(height: 50),
+
             //WELCMOE BACK
             Text(
               'Welcome Back, you\'ve been missed!',
@@ -119,6 +122,23 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 50),
 
             //NEW USER? SIGN UP
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'New User? ',
+                  style: TextStyle(color: Colors.grey[700], fontSize: 12),
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Sign Up',
+                  style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
           ]),
         ),
       ),
