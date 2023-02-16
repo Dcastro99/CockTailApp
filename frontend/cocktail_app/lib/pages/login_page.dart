@@ -2,16 +2,70 @@ import 'package:cocktail_app/components/my_textfield.dart';
 import 'package:cocktail_app/components/my_button.dart';
 import 'package:cocktail_app/components/square_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
-  final usernameController = TextEditingController();
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   //Sign in function
-  void signUserIn() {}
+  void signUserIn() async {
+//show loading indicator
+    showDialog(
+        context: context,
+        builder: (context) => const Center(child: CircularProgressIndicator()));
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        wrongEmailMessage();
+      } else if (e.code == 'wrong-password') {
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  void wrongEmailMessage() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Wrong Email'),
+              content: const Text('There is no user with this email'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('OK'))
+              ],
+            ));
+  }
+
+  void wrongPasswordMessage() {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Wrong Password'),
+              content: const Text('Please check your password'),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('OK'))
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +92,10 @@ class LoginPage extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            //USERNAME
+            //email
             Mytextfield(
-              controller: usernameController,
-              hintText: 'Username',
+              controller: emailController,
+              hintText: 'Email',
               obscureText: false,
             ),
 
