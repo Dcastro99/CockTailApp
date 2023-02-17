@@ -1,6 +1,7 @@
 import 'package:cocktail_app/components/my_textfield.dart';
 import 'package:cocktail_app/components/my_button.dart';
 import 'package:cocktail_app/components/square_tile.dart';
+import 'package:cocktail_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -155,10 +156,12 @@ class _RegisterPageState extends State<RegisterPage> {
               //GOOGLE + APPLE BUTTONS
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SquareTile(imagePath: 'lib/images/google.png'),
-                  SizedBox(width: 25),
-                  SquareTile(imagePath: 'lib/images/apple.png'),
+                children: [
+                  SquareTile(
+                      imagePath: 'lib/images/google.png',
+                      onTap: () => AuthService()),
+                  const SizedBox(width: 25),
+                  SquareTile(imagePath: 'lib/images/apple.png', onTap: () {}),
                 ],
               ),
 
