@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "605650289038",
+    "project_id": "cocktailauth",
+    "storage_bucket": "cocktailauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605650289038:android:77706e417a93ae089524df",
+        "android_client_info": {
+          "package_name": "com.example.cocktail_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605650289038-rmr1phlom8cq9hctsd5r2toa8ga2ub5u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeeltUiPZ4XCrW9bteVNfytaOwhVWzByM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605650289038-rmr1phlom8cq9hctsd5r2toa8ga2ub5u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
