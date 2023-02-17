@@ -5,6 +5,8 @@ import 'package:cocktail_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../models/CocktailUser.dart';
+
 class LoginPage extends StatefulWidget {
   final Function()? onTap;
   const LoginPage({super.key, required this.onTap});
@@ -20,16 +22,16 @@ class _LoginPageState extends State<LoginPage> {
 
   //Sign in function
   void signUserIn() async {
-//show loading indicator
+    //show loading indicator
     showDialog(
         context: context,
         builder: (context) => const Center(child: CircularProgressIndicator()));
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      CocktailUser user = await AuthService()
+          .signinWithOurService(emailController.text, passwordController.text);
+      print("user name:");
+      print(user.name);
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
