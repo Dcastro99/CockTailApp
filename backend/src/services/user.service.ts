@@ -13,8 +13,13 @@ export class UserService {
         return await this.userRepository.getUsers();
     }
 
-    async registerUser(user: User) {
-        return await this.userRepository.registerUser(user);
+    async getUserByEmail(email: String) {
+        return await this.userRepository.getUserByEmail(email);
+    }
+
+
+    async registerUser(password : String, email : String, name: String) {
+        return await this.userRepository.registerUser(password, email, name);
     }
 
     async updateUser(user: User) {

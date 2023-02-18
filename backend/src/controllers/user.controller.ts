@@ -17,9 +17,13 @@ export class UserController {
         return await this.userService.getUsers();
     }
 
-    async registerUser(user:User) {
-        this.logger.info('Controller: createUser', user);
-        return await this.userService.registerUser(user);
+    async getUserByEmail(email : String) {
+        this.logger.info('Controller: getUser by email', email);
+        return await this.userService.getUserByEmail(email);
+    }
+
+    async registerUser(password : String, email : String, name: String) {
+        return await this.userService.registerUser(password, email, name);
     }
 
     async updateUser(user:User) {

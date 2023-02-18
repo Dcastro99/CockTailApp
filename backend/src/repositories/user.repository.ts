@@ -30,11 +30,26 @@ export class UserRepository {
         }
     }
 
-    async registerUser(user :User) {
+    async getUserByEmail(email: String) {
+        
+        try {
+            const user = await this.userRepository.findOne({where: {
+                email: email
+            }});
+            this.logger.info('user bt email:::', user);
+            return user;
+        } catch (err) {
+			this.logger.error('Error::' + err);
+            return [];
+        }
+    }
+
+
+    async registerUser(password : String, email : String, userName: String) {
     
         let data = {};
         try {
-            data = await this.userRepository.create(user);
+            data = await this.userRepository.create({name: userName, email, password});
         } catch(err) {
             this.logger.error('Error::' + err);
         }

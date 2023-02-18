@@ -5,6 +5,8 @@ import { UserController } from "./controllers/user.controller";
 import * as swaggerUi from 'swagger-ui-express';
 import * as fs from 'fs';
 import 'dotenv/config'
+import { User } from "./models/user.model";
+import bcrypt from "bcrypt";
 
 class App {
 
@@ -42,14 +44,10 @@ class App {
         });
         
          this.express.post('/api/register',  (req, res) => {
-            this.logger.info("req.body:", req.body);
             try {
-                req.body.user = {};
-                req.body.user.email = req.body.loginObject.email;
-                req.body.user.password = req.body.loginObject.password;
-                req.body.user.name = "name";
-                this.userController.registerUser(req.body.user).then(data => {
-                    res.json(data)
+                this.userController.registerUser(req.body.loginObject.password, req.body.loginObject.email, "New User Name")
+                    .then(data => {
+                        res.json(data)
                     }
                 );
                 
@@ -71,16 +69,16 @@ class App {
             res.send("Typescript App works!!");
         });
 
-        this.express.post("/api/login", (req, res, next) => {
-            if (req.body.email && req.body.password) {
+        this.express.post("/api/login", async (req, res, next) => {
+            const userByEmail : User  = await this.userController.getUserByEmail(req.body.loginObject.email);
+            
+            const passwordMatch : boolean = await bcrypt.compare(req.body.loginObject.password, userByEmail.password);
+            if (passwordMatch) {
                 res.statusCode = 200;
-                const fakeUser = {
-                    id: 6,
-                    name: "User Name",
-                }
-                res.send(JSON.stringify(fakeUser));
+                res.send(userByEmail);
                 return;
             }
+
             res.statusCode = 422;
             res.send("Invalid Login Credentials");
         });
