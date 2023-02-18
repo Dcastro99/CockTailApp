@@ -58,20 +58,25 @@ class App {
             res.send("Typescript App works!!");
         });
 
-        this.express.post("/login", (req, res, next) => {
-            if (req.body.loginObject?.email && req.body.loginObject?.password) {
-                res.status(200);
-                return res.send("We Got an Email and Password");
+        this.express.post("/api/login", (req, res, next) => {
+            if (req.body.email && req.body.password) {
+                res.statusCode = 200;
+                const fakeUser = {
+                    id: 6,
+                    name: "User Name",
+                }
+                res.send(JSON.stringify(fakeUser));
+                return;
             }
-            res.status(422);
-            return res.send("Invalid Login Credentials");
+            res.statusCode = 422;
+            res.send("Invalid Login Credentials");
         });
 
 
         // swagger docs
         this.express.use('/api/docs', swaggerUi.serve,
             swaggerUi.setup(this.swaggerDocument, this.customCss));
-
+ 
         // handle undefined routes
         this.express.use("*", (req, res, next) => {
             res.send("Make sure url is correct!!!");
