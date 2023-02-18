@@ -17,9 +17,9 @@ export class UserController {
         return await this.userService.getUsers();
     }
 
-    async createUser(user:User) {
+    async registerUser(user:User) {
         this.logger.info('Controller: createUser', user);
-        return await this.userService.createUser(user);
+        return await this.userService.registerUser(user);
     }
 
     async updateUser(user:User) {

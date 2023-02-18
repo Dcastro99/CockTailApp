@@ -8,8 +8,6 @@ export const connect = () => {
     const database = "postgres";
     const dialect: any = "postgres";
 
-    console.log('dialect  ', dialect)
-
     const operatorsAliases: any = false;
 
     const sequelize = new Sequelize(database, userName, password, {
@@ -24,13 +22,10 @@ export const connect = () => {
             idle: 5000
         }
     });
-
     sequelize.addModels([User]);
-
     const db: any = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
     
     return db;
-
 }

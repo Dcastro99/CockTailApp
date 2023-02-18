@@ -40,4 +40,21 @@ class AuthService {
       throw Exception(response.body);
     }
   }
+
+  Future<CocktailUser> registerCocktailUser(
+      String email, String password) async {
+    final response = await http.post(
+      Uri.parse('http://localhost:3001/api/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(LoginObject(email: email, password: password)),
+    );
+
+    if (response.statusCode == 200) {
+      return CocktailUser.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception(response.body);
+    }
+  }
 }

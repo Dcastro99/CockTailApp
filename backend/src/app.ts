@@ -41,9 +41,22 @@ class App {
             });
         });
         
-        this.express.post('/api/createUser', (req, res) => {
+         this.express.post('/api/register',  (req, res) => {
             this.logger.info("req.body:", req.body);
-            this.userController.createUser(req.body.user).then(data => res.json(data));
+            try {
+                req.body.user = {};
+                req.body.user.email = req.body.loginObject.email;
+                req.body.user.password = req.body.loginObject.password;
+                req.body.user.name = "name";
+                this.userController.registerUser(req.body.user).then(data => {
+                    res.json(data)
+                    }
+                );
+                
+            } catch (error) {
+                this.logger.error(" " + error);
+
+            }
         });
         
         // this.express.put('/api/task', (req, res) => {

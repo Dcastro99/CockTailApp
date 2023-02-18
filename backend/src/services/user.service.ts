@@ -13,8 +13,8 @@ export class UserService {
         return await this.userRepository.getUsers();
     }
 
-    async createUser(user: User) {
-        return await this.userRepository.createUser(user);
+    async registerUser(user: User) {
+        return await this.userRepository.registerUser(user);
     }
 
     async updateUser(user: User) {
