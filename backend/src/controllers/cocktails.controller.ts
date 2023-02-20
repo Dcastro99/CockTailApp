@@ -3,6 +3,7 @@ import * as express from 'express';
 import { Cocktail } from '../models/cocktail.model';
 import { User } from '../models/user.model';
 import { CocktailsService } from '../services/cocktails.service';
+import { Sessions } from '../middleware/session.middleware';
 
 class CocktailsController {
 
@@ -15,9 +16,9 @@ class CocktailsController {
     }
 
     public initializeRoutes() {
-        this.router.get("/cocktails", this.getAllCocktails);
-        this.router.get("/userCocktails", this.getUserCocktails);
-        this.router.post("/userCocktails/create", this.createCocktail);
+        this.router.get("/cocktails", Sessions.checkSession, this.getAllCocktails);
+        this.router.get("/userCocktails", Sessions.checkSession, this.getUserCocktails);
+        this.router.post("/userCocktails/create", Sessions.checkSession, this.createCocktail);
     }
 
     getAllCocktails = async (req: express.Request, res: express.Response) : Promise<Cocktail[]> => {

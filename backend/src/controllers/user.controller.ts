@@ -3,6 +3,7 @@ import * as express from 'express';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import bcrypt from "bcrypt";
+import { Sessions } from '../middleware/session.middleware';
 
 class UserController {
 
@@ -15,7 +16,7 @@ class UserController {
     }
 
     public initializeRoutes() {
-        this.router.get("users", this.getAllUsers);
+        this.router.get("users", Sessions.checkSession, this.getAllUsers);
         this.router.post("/users/login", this.login);
         this.router.post("/users/register", this.registerUser);
     }
@@ -45,6 +46,9 @@ class UserController {
 
         const passwordMatch: boolean = await bcrypt.compare(req.body.loginObject.password, userByEmail.password);
         if (passwordMatch) {
+            // res.session = {}
+            // res.session.username = userByEmail.name
+
             res.statusCode = 200;
             res.send(userByEmail);
             return;
@@ -60,6 +64,13 @@ class UserController {
     // this.express.delete('/api/task/:id', (req, res) => {
     //     this.taskController.deleteTask(req.params.id).then(data => res.json(data));
     // });
+
+    setupUserSession = (req : any, user : User) => {
+        req.session.user = {
+            id: user.id,
+            username: user.name,
+        }
+    }
 }
 
 export default UserController;

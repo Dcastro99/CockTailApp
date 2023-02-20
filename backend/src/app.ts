@@ -6,6 +6,7 @@ import CocktailsController from "./controllers/cocktails.controller";
 import * as swaggerUi from 'swagger-ui-express';
 import * as fs from 'fs';
 import 'dotenv/config'
+import cookieSession from "cookie-session";
 
 
 
@@ -29,9 +30,21 @@ class App {
         this.logger = new APILogger();
         // this.userController = new UserController();
     }
-
+    
     // Configure Express middleware.
     private middleware(): void {
+        const sessionConfig = {
+            name: "cocktailApp",
+            secret: "Give me cookies or give me nothing",
+            cookie: {
+                maxAge: 1000 * 60 * 60,
+                secure: false, // set to true on prod to use HTTPS
+                httpOnly: true,
+            },
+            resave: false,
+            saveUninitialized: true,
+        };
+        this.express.use(cookieSession(sessionConfig))
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
     }
