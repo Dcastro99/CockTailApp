@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import { Cocktail } from '../models/cocktail.model';
 import { User } from '../models/user.model';
 
 export const connect = () => {
@@ -22,7 +23,7 @@ export const connect = () => {
             idle: 5000
         }
     });
-    sequelize.addModels([User]);
+    sequelize.addModels([User, Cocktail]);
     const db: any = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
