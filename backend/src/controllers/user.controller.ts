@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import bcrypt from "bcrypt";
 import { Sessions } from '../middleware/session.middleware';
+import { encodeSession } from "../services/tokens.service";
 
 class UserController {
 
@@ -46,9 +47,14 @@ class UserController {
 
         const passwordMatch: boolean = await bcrypt.compare(req.body.loginObject.password, userByEmail.password);
         if (passwordMatch) {
-            // res.session = {}
-            // res.session.username = userByEmail.name
-
+            const SECRET_KEY_HERE = "My Secret For Now";
+            const session = encodeSession(SECRET_KEY_HERE, {
+                userId: userByEmail.id,
+                username: userByEmail.name,
+                dateCreated: Date.now()        
+            });
+            
+            res.cookie("Cocktail-App-Token", session.token);
             res.statusCode = 200;
             res.send(userByEmail);
             return;
@@ -64,13 +70,6 @@ class UserController {
     // this.express.delete('/api/task/:id', (req, res) => {
     //     this.taskController.deleteTask(req.params.id).then(data => res.json(data));
     // });
-
-    setupUserSession = (req : any, user : User) => {
-        req.session.user = {
-            id: user.id,
-            username: user.name,
-        }
-    }
 }
 
 export default UserController;
