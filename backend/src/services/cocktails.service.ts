@@ -17,7 +17,7 @@ export class CocktailsService {
         return await this.cocktailRepository.getCocktailsByUserId(userId);
     }
 
-    async createCocktail(userId : number, name : String)  : Promise<Cocktail>{
+    async createCocktail(userId : number, name : String)  : Promise<Cocktail | null>{
         return await this.cocktailRepository.createCocktail(userId, name);
     }
 

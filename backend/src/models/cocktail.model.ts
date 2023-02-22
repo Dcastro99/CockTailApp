@@ -1,5 +1,15 @@
-import { Table, Column, Model, BelongsTo, ForeignKey } from 'sequelize-typescript'
+import { Table, Column, Model, BelongsTo, ForeignKey, DataType, NotNull } from 'sequelize-typescript'
+
 import { User } from './user.model';
+
+
+export class Ingredient {
+	name : string = "";
+}
+
+export class Ingredients {
+	ingredients : Ingredient[] = [];
+}
 @Table
 export class Cocktail extends Model {
   
@@ -16,4 +26,7 @@ export class Cocktail extends Model {
 
 	@BelongsTo(() => User, {targetKey: 'id'})
 	user?: User
+
+	@Column({type: DataType.JSON, allowNull:false})
+	ingredients?: JSON
 }

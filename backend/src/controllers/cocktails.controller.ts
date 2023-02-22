@@ -28,17 +28,17 @@ class CocktailsController {
 		return cocktails;
     };
 
-    createCocktail = async (req: express.Request, res: express.Response) : Promise<Cocktail> => {
+    createCocktail = async (req: express.Request, res: express.Response) : Promise<Cocktail | null> => {
         try {
-            const newCocktail : Cocktail = await this.cocktailsService.createCocktail(req.body.userId, req.body.name);
+            const newCocktail : Cocktail | null = await this.cocktailsService.createCocktail(req.body.userId, req.body.name);
             res.statusCode = 200;
             res.json(newCocktail);
             return newCocktail;
         } catch (error) {
             console.error(" errorr ;; " + error);
             res.statusCode = 422
-            res.send("User Not Created");
-            return Cocktail.build();
+            res.send("Cocktail Not Created");
+            return null;
         }
     };
 

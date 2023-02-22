@@ -1,6 +1,6 @@
 import { connect } from "../config/db.config";
 import { APILogger } from '../logger/api.logger';
-import { Cocktail } from "../models/cocktail.model";
+import { Cocktail, Ingredient, Ingredients } from "../models/cocktail.model";
 
 export class CocktailRepository {
 
@@ -19,47 +19,63 @@ export class CocktailRepository {
     }
 
     async getCocktails() {
-        
+
         try {
             const cocktails = await this.cocktailRepository.findAll();
             this.logger.info('cocktails:::', cocktails);
             return cocktails;
         } catch (err) {
-			this.logger.error('Error::' + err);
+            this.logger.error('Error::' + err);
             return [];
         }
     }
 
-    async getCocktailsByUserId(userId: number) : Promise<Cocktail[]> {
-		console.log('userId ?? ', userId);
-		
+    async getCocktailsByUserId(userId: number): Promise<Cocktail[]> {
+        console.log('userId ?? ', userId);
+
         try {
-            const userCocktails : Cocktail[] = await this.cocktailRepository.findAll({where: {
-                userId: userId
-            }});
+            const userCocktails: Cocktail[] = await this.cocktailRepository.findAll({
+                where: {
+                    userId: userId
+                }
+            });
             this.logger.info('userCocktails by user id :::', userCocktails);
             return userCocktails;
         } catch (err) {
-			this.logger.error('Error::' + err);
+            this.logger.error('Error::' + err);
             return [];
         }
     }
 
-    async createCocktail(userId : number, cocktailName: String) : Promise<Cocktail> {
+    async createCocktail(userId: number, cocktailName: String): Promise<Cocktail | null> {
+
+
         try {
-			let data : Cocktail = await this.cocktailRepository.create({name: cocktailName, userId: userId});
-			return data;
-        } catch(err) {
-            this.logger.error('Error::' + err);
+
+            const newIngredient: Ingredient = new Ingredient();
+            newIngredient.name = "New Ingred";
+            const ingredients: Ingredients = new Ingredients();
+            ingredients.ingredients.push(newIngredient);
+
+            let newCock: Cocktail = await this.cocktailRepository.create({ name: cocktailName, userId: userId, ingredients: JSON.parse(JSON.stringify(ingredients)) });
+            console.log('newCock.ingredients ?? ', newCock.ingredients);
+            newCock = await this.cocktailRepository.update({ ...newCock }, {
+                    where: {
+                        userId: userId
+                    }
+                });
+            return newCock;
+        } catch (err) {
+            this.logger.error('Create Error :: ' + err);
         }
-		return Cocktail.build();
+        return null;
     }
 
     // async updateUser(user :User) {
     //     let data = {};
     //     try {
-            
-    //         data = await this.userRepository.update({...user}, {
+
+    //         data = await this.cocktailRepository.update({...user}, {
     //             where: {
     //                 id: user.id
     //             }
