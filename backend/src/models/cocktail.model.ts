@@ -19,6 +19,8 @@ export class Cocktail extends Model {
     @Column
     name!: string
 
+	@Column
+    isFavorite!: boolean
 	
 	@Column
 	@ForeignKey(() => User)
