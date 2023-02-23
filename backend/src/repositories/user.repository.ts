@@ -1,6 +1,6 @@
 import { connect } from "../config/db.config";
 import { APILogger } from '../logger/api.logger';
-import { User } from "../models/user.model";
+import { User, UserSettings, UserSocialLink, UserSocialList } from "../models/user.model";
 
 export class UserRepository {
 
@@ -12,9 +12,9 @@ export class UserRepository {
         this.logger = new APILogger();
         this.db = connect();
         // For Development
-        // this.db.sequelize.sync({ force: true }).then(() => {
-        //     this.logger?.info("Drop and re-sync db.", {});
-        // });
+        this.db.sequelize.sync({ force: true }).then(() => {
+            this.logger?.info("Drop and re-sync db.", {});
+        });
         this.userRepository = this.db.sequelize.getRepository(User);
     }
 
@@ -46,10 +46,17 @@ export class UserRepository {
 
 
     async registerUser(password : String, email : String, userName: String) {
-    
+        const newUserSettings : UserSettings = new UserSettings();
+        const userLink : UserSocialLink = new UserSocialLink();
+        const userLinks : UserSocialList = new UserSocialList();
+        userLinks.links.push(userLink);
         let data = {};
         try {
-            data = await this.userRepository.create({name: userName, email, password});
+            data = await this.userRepository.create({name: userName, 
+                                                    email, 
+                                                    password, 
+                                                    userSettings: JSON.parse(JSON.stringify(newUserSettings)), 
+                                                    userSocialLinks: JSON.parse(JSON.stringify(userLinks))});
         } catch(err) {
             this.logger.error('Error::' + err);
         }

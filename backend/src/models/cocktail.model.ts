@@ -10,6 +10,7 @@ export class Ingredient {
 export class Ingredients {
 	ingredients : Ingredient[] = [];
 }
+
 @Table
 export class Cocktail extends Model {
   

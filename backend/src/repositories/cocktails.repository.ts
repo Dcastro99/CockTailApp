@@ -57,13 +57,7 @@ export class CocktailRepository {
             const ingredients: Ingredients = new Ingredients();
             ingredients.ingredients.push(newIngredient);
 
-            let newCock: Cocktail = await this.cocktailRepository.create({ name: cocktailName, userId: userId, ingredients: JSON.parse(JSON.stringify(ingredients)) });
-            console.log('newCock.ingredients ?? ', newCock.ingredients);
-            newCock = await this.cocktailRepository.update({ ...newCock }, {
-                    where: {
-                        userId: userId
-                    }
-                });
+            const newCock: Cocktail = await this.cocktailRepository.create({ name: cocktailName, userId: userId, ingredients: JSON.parse(JSON.stringify(ingredients)) });
             return newCock;
         } catch (err) {
             this.logger.error('Create Error :: ' + err);
