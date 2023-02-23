@@ -4,7 +4,7 @@ import { User } from './user.model';
 
 
 export class Ingredient {
-	name : string = "";
+	name  = "";
 }
 
 export class Ingredients {

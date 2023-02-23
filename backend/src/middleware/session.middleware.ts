@@ -7,7 +7,7 @@ const isLoggedIn = (req: express.Request) => {
 	const SECRET_KEY_HERE = "My Secret For Now";
 	if (cookieParts) {
 		const cookieToken = cookieParts.split("Cocktail-App-Token=")[1];
-		let result : DecodeResult = decodeSession(SECRET_KEY_HERE, cookieToken);
+		const result : DecodeResult = decodeSession(SECRET_KEY_HERE, cookieToken);
 		
 		if (result && userId == result.session?.userId) {			
 			return true;

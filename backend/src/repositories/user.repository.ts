@@ -30,7 +30,7 @@ export class UserRepository {
         }
     }
 
-    async getUserByEmail(email: String) {
+    async getUserByEmail(email: string) {
         
         try {
             const user = await this.userRepository.findOne({where: {
@@ -45,7 +45,7 @@ export class UserRepository {
     }
 
 
-    async registerUser(password : String, email : String, userName: String) {
+    async registerUser(password : string, email : string, userName: string) {
         const newUserSettings : UserSettings = new UserSettings();
         const userLink : UserSocialLink = new UserSocialLink();
         const userLinks : UserSocialList = new UserSocialList();
@@ -78,7 +78,7 @@ export class UserRepository {
         return data;
     }
 
-    async deleteUser(userId :Number) {
+    async deleteUser(userId :number) {
         let data = {};
         try {
             data = await this.userRepository.destroy({

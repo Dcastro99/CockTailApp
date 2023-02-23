@@ -47,7 +47,7 @@ export class CocktailRepository {
         }
     }
 
-    async createCocktail(userId: number, cocktailName: String): Promise<Cocktail | null> {
+    async createCocktail(userId: number, cocktailName: string): Promise<Cocktail | null> {
 
 
         try {

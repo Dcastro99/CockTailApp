@@ -13,12 +13,12 @@ export class UserService {
         return await this.userRepository.getUsers();
     }
 
-    async getUserByEmail(email: String) {
+    async getUserByEmail(email: string) {
         return await this.userRepository.getUserByEmail(email);
     }
 
 
-    async registerUser(password : String, email : String, name: String) {
+    async registerUser(password : string, email : string, name: string) {
         return await this.userRepository.registerUser(password, email, name);
     }
 
@@ -26,7 +26,7 @@ export class UserService {
         return await this.userRepository.updateUser(user);
     }
 
-    async deleteUser(userId: Number) {
+    async deleteUser(userId: number) {
         return await this.userRepository.deleteUser(userId);
     }
 
