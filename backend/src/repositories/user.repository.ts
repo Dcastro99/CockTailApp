@@ -12,9 +12,9 @@ export class UserRepository {
         this.logger = new APILogger();
         this.db = connect();
         // For Development
-        this.db.sequelize.sync({ force: true }).then(() => {
-            this.logger?.info("Drop and re-sync db.", {});
-        });
+        // this.db.sequelize.sync({ force: true }).then(() => {
+        //     this.logger?.info("Drop and re-sync db.", {});
+        // });
         this.userRepository = this.db.sequelize.getRepository(User);
     }
 
