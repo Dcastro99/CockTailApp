@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import { Cocktail } from '../models/cocktail.model';
 import { User } from '../models/user.model';
 
 export const connect = () => {
@@ -7,8 +8,6 @@ export const connect = () => {
     const password = "admin";
     const database = "postgres";
     const dialect: any = "postgres";
-
-    console.log('dialect  ', dialect)
 
     const operatorsAliases: any = false;
 
@@ -24,13 +23,10 @@ export const connect = () => {
             idle: 5000
         }
     });
-
-    sequelize.addModels([User]);
-
+    sequelize.addModels([User, Cocktail]);
     const db: any = {};
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
     
     return db;
-
 }

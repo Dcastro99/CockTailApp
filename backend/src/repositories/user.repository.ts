@@ -1,19 +1,20 @@
 import { connect } from "../config/db.config";
 import { APILogger } from '../logger/api.logger';
-import { User } from "../models/user.model";
+import { User, UserSettings, UserSocialLink, UserSocialList } from "../models/user.model";
 
 export class UserRepository {
 
-    private logger: APILogger | undefined;
+    private logger: APILogger;
     private db: any = {};
     private userRepository: any;
 
     constructor() {
+        this.logger = new APILogger();
         this.db = connect();
         // For Development
-        this.db.sequelize.sync({ force: true }).then(() => {
-            this.logger?.info("Drop and re-sync db.", {});
-        });
+        // this.db.sequelize.sync({ force: true }).then(() => {
+        //     this.logger?.info("Drop and re-sync db.", {});
+        // });
         this.userRepository = this.db.sequelize.getRepository(User);
     }
 
@@ -21,20 +22,43 @@ export class UserRepository {
         
         try {
             const users = await this.userRepository.findAll();
-            this.logger?.info('users:::', users);
+            this.logger.info('users:::', users);
             return users;
         } catch (err) {
-			this.logger?.error('Error::' + err);
+			this.logger.error('Error::' + err);
             return [];
         }
     }
 
-    async createUser(user :User) {
+    async getUserByEmail(email: string) {
+        
+        try {
+            const user = await this.userRepository.findOne({where: {
+                email: email
+            }});
+            this.logger.info('user bt email:::', user);
+            return user;
+        } catch (err) {
+			this.logger.error('Error::' + err);
+            return [];
+        }
+    }
+
+
+    async registerUser(password : string, email : string, userName: string) {
+        const newUserSettings : UserSettings = new UserSettings();
+        const userLink : UserSocialLink = new UserSocialLink();
+        const userLinks : UserSocialList = new UserSocialList();
+        userLinks.links.push(userLink);
         let data = {};
         try {
-            data = await this.userRepository.create(user);
+            data = await this.userRepository.create({name: userName, 
+                                                    email, 
+                                                    password, 
+                                                    userSettings: JSON.parse(JSON.stringify(newUserSettings)), 
+                                                    userSocialLinks: JSON.parse(JSON.stringify(userLinks))});
         } catch(err) {
-            this.logger?.error('Error::' + err);
+            this.logger.error('Error::' + err);
         }
         return data;
     }
@@ -54,7 +78,7 @@ export class UserRepository {
         return data;
     }
 
-    async deleteUser(userId :Number) {
+    async deleteUser(userId :number) {
         let data = {};
         try {
             data = await this.userRepository.destroy({
