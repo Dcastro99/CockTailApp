@@ -11,8 +11,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12
-    - name: yarn install
+    - name: npm install
       working-directory: ./backend
-      run: yarn install
+      run: npm install
     - name: eslint
       uses: icrawl/action-eslint@v1
