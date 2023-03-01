@@ -15,4 +15,5 @@ jobs:
       working-directory: ./backend
       run: npm install
     - name: eslint
+      working-directory: ./backend
       run: npm run lint:ts
