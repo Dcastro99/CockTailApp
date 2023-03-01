@@ -1,0 +1,33 @@
+on:
+  pull_request:
+
+jobs:
+  eslint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: install node v12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: npm install
+      working-directory: ./backend
+      run: npm install
+    - name: eslint
+      working-directory: ./backend
+      run: npm run lint:ts
+  flutter-lint:
+    name: Lint flutter
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1
+    - name: Setup analyze
+      working-directory: ./frontend/cocktail_app
+      run: flutter pub get
+    - name: analyze
+      working-directory: ./frontend/cocktail_app
+      run: flutter analyze
