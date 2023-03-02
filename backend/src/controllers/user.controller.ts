@@ -5,6 +5,7 @@ import { UserService } from '../services/user.service';
 import bcrypt from "bcrypt";
 import { Sessions } from '../middleware/session.middleware';
 import { encodeSession } from "../services/tokens.service";
+import { UserValidator } from '../validators/user.validator';
 
 class UserController {
 
@@ -20,25 +21,37 @@ class UserController {
         this.router.get("users", Sessions.checkSession, this.getAllUsers);
         this.router.post("/users/login", this.login);
         this.router.post("/users/register", this.registerUser);
+        this.router.put("/users/:userId", this.registerUser);
     }
 
     getAllUsers = (req: express.Request, res: express.Response) => {
         this.userService.getUsers().then(data => {
-            return res.json(data)
+            res.json(data)
         });
     };
 
     registerUser = async (req: express.Request, res: express.Response) => {
         try {
-            const newUser = await this.userService.registerUser(req.body.loginObject.password, req.body.loginObject.email, "New User Name");
+            const newUser = await this.userService.registerUser(req.body.loginObject.password, req.body.loginObject.email, "");
             res.statusCode = 200;
             res.json(newUser);
-            return;
         } catch (error) {
             console.error(" " + error);
             res.statusCode = 422
             res.send("User Not Created");
-            return;
+        }
+    };
+
+     updateUser = async (req: express.Request, res: express.Response) => {
+        try {
+            UserValidator.validate(req.body.user);
+            const newUser = await this.userService.updateUser(req.body.user);
+            res.statusCode = 200;
+            res.json(newUser);
+        } catch (error) {
+            console.error(" " + error);
+            res.statusCode = 422
+            res.send("User Not Created");
         }
     };
 
