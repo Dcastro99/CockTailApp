@@ -30,10 +30,11 @@ export class UserRepository {
         }
     }
 
-    async getUserByEmail(email: string) {
+    async getUserByEmail(uid: string, email: string) {
         
         try {
             const user = await this.userRepository.findOne({where: {
+                uid: uid,
                 email: email
             }});
             this.logger.info('user bt email:::', user);
@@ -45,16 +46,16 @@ export class UserRepository {
     }
 
 
-    async registerUser(password : string, email : string, userName: string) {
+    async registerUser(uid : string, email : string, userName: string) {
         const newUserSettings : UserSettings = new UserSettings();
         const userLink : UserSocialLink = new UserSocialLink();
         const userLinks : UserSocialList = new UserSocialList();
         userLinks.links.push(userLink);
         let data = {};
         try {
-            data = await this.userRepository.create({name: userName, 
+            data = await this.userRepository.create({uid,
+                                                    name: userName, 
                                                     email, 
-                                                    password, 
                                                     userSettings: JSON.parse(JSON.stringify(newUserSettings)), 
                                                     userSocialLinks: JSON.parse(JSON.stringify(userLinks))});
         } catch(err) {

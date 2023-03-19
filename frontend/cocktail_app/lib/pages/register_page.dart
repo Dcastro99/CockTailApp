@@ -5,6 +5,8 @@ import 'package:cocktail_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../models/CocktailUser.dart';
+
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
   const RegisterPage({super.key, required this.onTap});
@@ -27,10 +29,15 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
-        // await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        //   email: emailController.text,
-        //   password: passwordController.text,
-        // );
+        UserCredential userCred =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        CocktailUser user = await AuthService().registerCocktailUser(
+            userCred.user!.uid,
+            emailController.text,
+            userCred.user!.displayName);
       } else {
         Navigator.pop(context);
         showErrorMessage('Passwords do not match');

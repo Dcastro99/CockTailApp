@@ -28,12 +28,14 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) => const Center(child: CircularProgressIndicator()));
 
     try {
+      UserCredential userCred =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
       CocktailUser user = await AuthService()
-          .signinWithOurService(emailController.text, passwordController.text);
-      // await FirebaseAuth.instance.signInWithEmailAndPassword(
-      //   email: emailController.text,
-      //   password: passwordController.text,
-      // );
+          .signinWithOurService(userCred.user!.uid, emailController.text);
       print("user name:");
       print(user.name);
       Navigator.pop(context);

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { DecodeResult, decodeSession, Session } from '../services/tokens.service';
+import { DecodeResult, decodeSession } from '../services/tokens.service';
 
 const isLoggedIn = (req: express.Request) => {
 	const userId = req.headers["user-id"];

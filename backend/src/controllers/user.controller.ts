@@ -1,8 +1,6 @@
-
 import * as express from 'express';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
-import bcrypt from "bcrypt";
 import { Sessions } from '../middleware/session.middleware';
 import { encodeSession } from "../services/tokens.service";
 import { UserValidator } from '../validators/user.validator';
@@ -32,7 +30,7 @@ class UserController {
 
     registerUser = async (req: express.Request, res: express.Response) => {
         try {
-            const newUser = await this.userService.registerUser(req.body.loginObject.password, req.body.loginObject.email, "");
+            const newUser = await this.userService.registerUser(req.body.signupObject.uid, req.body.signupObject.email, req.body.signupObject.name);
             res.statusCode = 200;
             res.json(newUser);
         } catch (error) {
@@ -56,12 +54,12 @@ class UserController {
     };
 
     login = async (req: express.Request, res: express.Response) => {
-        const userByEmail: User = await this.userService.getUserByEmail(req.body.loginObject.email);
+        const userByEmail: User = await this.userService.getUserByEmail(req.body.loginObject.uid, req.body.loginObject.email);
 
-        const passwordMatch: boolean = await bcrypt.compare(req.body.loginObject.password, userByEmail.password);
-        if (passwordMatch) {
+        if (userByEmail) {
             const SECRET_KEY_HERE = "My Secret For Now";
             const session = encodeSession(SECRET_KEY_HERE, {
+                uid: userByEmail.uid,
                 userId: userByEmail.id,
                 username: userByEmail.name,
                 dateCreated: Date.now()        

@@ -1,6 +1,7 @@
 import { decode,encode, TAlgorithm } from "jwt-simple";
 
 export interface Session {
+    uid: string
     userId: number;
     dateCreated: number;
     username: string;

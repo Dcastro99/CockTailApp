@@ -1,11 +1,11 @@
 class LoginObject {
+  final String uid;
   final String email;
-  final String password;
 
-  const LoginObject({required this.email, required this.password});
+  const LoginObject({required this.uid, required this.email});
 
   Map<String, dynamic> toJson() => {
+        'uid': uid,
         'email': email,
-        'password': password,
       };
 }

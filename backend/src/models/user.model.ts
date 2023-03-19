@@ -22,13 +22,13 @@ export class User extends Model {
     id!: number
 
     @Column
+    uid!: string
+
+    @Column
     name!: string
 
     @Column
     email!: string
-
-    @Column
-    password!: string
 
     @Column
     displayPhotoLink!: string
@@ -38,12 +38,4 @@ export class User extends Model {
 
     @Column({type: DataType.JSON, allowNull:false})
 	userSocialLinks?: JSON
-
-    @BeforeCreate
-    static hashPassword(instance: User) {
-        if (instance.password) {
-            const salt = bcrypt.genSaltSync(10, 'a');
-            instance.password = bcrypt.hashSync(instance.password, salt);
-           }
-      }
 }
